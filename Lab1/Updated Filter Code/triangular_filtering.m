@@ -1,4 +1,5 @@
 %% Square wave generator
+% Junseo Mun and Matthew El Chalouhi
 clc
 clear all
 hold off
@@ -22,6 +23,7 @@ title('input - time domain')
 pause
 
 %% Fourier series representation of signal (Amplitude Spectrum)
+% Junseo Mun and Matthew El Chalouhi
       
 K=1/(2*pi);
 N= 100; %no. of harmonics
@@ -49,6 +51,7 @@ title('magnitude spectrum of input')
 pause
 
 %% Fourier series representation of signal (Phase Spectrum)
+% Junseo Mun and Matthew El Chalouhi
 
 figure(3)
 Hp1=stem(f,angle(c_in));
@@ -60,6 +63,7 @@ title('phase spectrum of input')
 pause
 
 %% Designing the 2nd order Butterworth filter
+% Junseo Mun and Matthew El Chalouhi
 
 
 R=10000; %10k ohms
@@ -79,12 +83,13 @@ hold off
 axis([-8*f0 8*f0 0 max(abs(c_in))])
 Ha = gca;
 set(Ha,'Fontsize',16)
-title('magnitude spectrum of filter output and input')
+title('magnitude spectrum of filter Input and Output')
 Ha = gca;
 set(Ha,'Fontsize',16)
 legend('input','output')
 pause
-%% 
+%% Plotting the Phase Spectrum of Input and Output
+% Junseo Mun and Matthew El Chalouhi
 
 figure(5)
 stem(f,angle(c_in),'r','LineWidth',2);
@@ -102,6 +107,7 @@ pause
 
 
 %% Construct the output signal from the Cout Fourier coefficients
+% Junseo Mun and Matthew El Chalouhi
 
 A = zeros(3*N+1,ceil(no_sample));
 for n = nvec
