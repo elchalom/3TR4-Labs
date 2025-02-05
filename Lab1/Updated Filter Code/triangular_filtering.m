@@ -8,11 +8,11 @@ f0=800;     %fundamental freq of input sqaure wave
 T0 = 1/f0;  %period 
 tstep = 0.01*T0;
 no_sample = 3*T0/tstep + 1; %no. of samples  within  3*T0
-
+A = 2.5;
 %tt = -0.5*T0:tstep:0.5*T0;
 tt = -1.5*T0:tstep:1.5*T0;
 
-square_in = 2*square(tt*2*pi*f0,50);
+square_in = A*square(tt*2*pi*f0,50);
 
 figure(1)
 Hp1 = plot(tt,square_in);
@@ -29,7 +29,7 @@ K=1/(2*pi);
 N= 100; %no. of harmonics
 nvec = -N:N;
 c_in = zeros(size(nvec)); %fourier coefficients
-A = 2;
+
 for n = nvec
     m = n+N+1;
     c_in(m) = (A/(1i*n*pi))*(1-cos(n*pi));
@@ -71,7 +71,8 @@ C=1e-8; %10 nF
 fc=1/(2*pi*R*C);     %cutoff freq of filter
 %fc = 5000;
 
-Hf = 1./ (power(1i*f/fc,2) + 1.414*(1i*f/fc) + 1); %filter transfer function
+% 1.586 gain
+Hf = 1.586./ (power(1i*f/fc,2) + 1.414*(1i*f/fc) + 1); %filter transfer function
 
 c_out = c_in .* Hf; %Fourier coefficients of the filter output
 
@@ -99,7 +100,7 @@ hold off
 axis([-0.8e4 0.8e4 -pi pi])
 Ha = gca;
 set(Ha,'Fontsize',16)
-title('phase spectrum of input and output')
+title('phase spectrum of filter input and output')
 Ha = gca;
 set(Ha,'Fontsize',16)
 legend('input','output')
@@ -115,7 +116,7 @@ for n = nvec
     A(m,:) = c_out(m) .* exp(1i*2*pi*n*f0*tt);
 end
 gp_out = sum(A);
-figure(6)
+figure(5)
 Hp1 = plot(tt,real(gp_out),'b',tt,square_in,'r');
 set(Hp1,'LineWidth',2)
 Ha = gca;
