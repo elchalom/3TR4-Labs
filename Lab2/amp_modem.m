@@ -24,31 +24,35 @@ Ac = 1;
 ct=Ac*cos(2*pi*fc*tt);
 
 %message signal
-Am=1;
+Tm = 0.0005;
+Am = 1;
 fm = 1e3;
-mt = Am*cos(2*pi*fm*tt);
+mt = -2 * sinc(tt/Tm);
+% mt = Am*cos(2*pi*fm*tt);
 
 %max of absolute of m(t)
-maxmt = Am;
-%For 40% modulation
-ka=0.4/maxmt;
+maxmt = max(abs(mt));
+%For 50% modulation
+ka= 2/maxmt;
 
 %AM signal
 st = (1+ka*mt).*ct;
 
-% Carrier Signal, Time Domain
-figure(1)
-Hp1 = plot(tt,ct);
-set(Hp1,'LineWidth',2)
-Ha = gca;
-set(Ha,'Fontsize',16)
-Hx=xlabel('Time (sec) ');
-set(Hx,'FontWeight','bold','Fontsize',16)
-Hx=ylabel('Carrier c(t)  (Volt)');
-set(Hx,'FontWeight','bold','Fontsize',16)
-title('Carrier : Time domain');
-axis([-1e-3 1e-3 -1.1 1.1])
-pause(1)
+%%
+% % Carrier Signal, Time Domain
+% figure(1)
+% Hp1 = plot(tt,ct);
+% set(Hp1,'LineWidth',2)
+% Ha = gca;
+% set(Ha,'Fontsize',16)
+% Hx=xlabel('Time (sec) ');
+% set(Hx,'FontWeight','bold','Fontsize',16)
+% Hx=ylabel('Carrier c(t)  (Volt)');
+% set(Hx,'FontWeight','bold','Fontsize',16)
+% title('Carrier : Time domain');
+% axis([-1e-3 1e-3 -1.1 1.1])
+% pause(1)
+% %
 
 % Message Signal Time domain
 figure(2)
@@ -64,6 +68,7 @@ title('message signal : Time domain');
 axis([-2e-3 2e-3 min(mt) max(mt)])
 pause(1)
 
+%%
 % Modulated Signal, Time domain
 figure(3)
 Hp1 = plot(tt,st);
@@ -78,22 +83,24 @@ title('modulated wave : Time domain');
 axis([-2e-3 2e-3 min(st) max(st)])
 pause(1)
 
-% Spectrum of Message signal
-Mf1 = fft(fftshift(mt));
-Mf = fftshift(Mf1);
-figure(4)
-Hp1=plot(freq,abs(Mf));
-set(Hp1,'LineWidth',2)
-Ha = gca;
-set(Ha,'Fontsize',16)
-Hx=xlabel('Frequency (Hz) ');
-set(Hx,'FontWeight','bold','Fontsize',16)
-Hx=ylabel('|M(f)|');
-set(Hx,'FontWeight','bold','Fontsize',16)
-title('Spectrum of the message signal');
-axis ([-5e3 5e3 0 max(abs(Mf))])
-%pause(5)
+%
+% % Spectrum of Message signal
+% Mf1 = fft(fftshift(mt));
+% Mf = fftshift(Mf1);
+% figure(4)
+% Hp1=plot(freq,abs(Mf));
+% set(Hp1,'LineWidth',2)
+% Ha = gca;
+% set(Ha,'Fontsize',16)
+% Hx=xlabel('Frequency (Hz) ');
+% set(Hx,'FontWeight','bold','Fontsize',16)
+% Hx=ylabel('|M(f)|');
+% set(Hx,'FontWeight','bold','Fontsize',16)
+% title('Spectrum of the message signal');
+% axis ([-5e3 5e3 0 max(abs(Mf))])
+% pause(5)
 
+%%
 % Spectrum of Modulated signal
 Sf1 = fft(fftshift(st));
 Sf = fftshift(Sf1);
@@ -108,14 +115,13 @@ Hx=ylabel('|S(f)|');
 set(Hx,'FontWeight','bold','Fontsize',16)
 title('Spectrum of the modulated wave');
 axis ([-25e3 25e3 0 max(abs(Sf))])
-%pause(5)
+pause(5)
 
 %% Demodulation
 
 %time constant RC
 %This should be optimized to avoid envelope distortion 
-RC = 0.5*(1/fc + 1/fm);
-
+RC = 0.5*(1/fc + Tm);
 
 %Envelope detector
 yt = st;
@@ -133,7 +139,7 @@ for t=tt
 end
 yt(1)=yt(2);
 
-
+% output of envelope detector
 figure(6)
 Hp1 = plot(tt,yt);
 set(Hp1,'LineWidth',2)
