@@ -27,7 +27,6 @@ ct=Ac*cos(2*pi*fc*tt);
 
 %message signal
 Tm = 0.0005;
-Am = 1;
 fm = 1e3;
 mt = -2 * sinc(tt/Tm);
 % mt = Am*cos(2*pi*fm*tt);
