@@ -2,7 +2,7 @@ clear
 hold off
 format long e
 N = 4096; %No. of FFT samples
-sampling_rate = 100.0e3; %unit Hz
+sampling_rate = 500.0e3; %unit Hz
 tstep = 1/sampling_rate;
 tmax = N*tstep/2;
 
@@ -13,12 +13,22 @@ fmin = -fmax;
 fstep = (fmax-fmin)/N;
 freq = fmin:fstep:fmax-fstep;
 
-fc=20e3;
+% Signal Parameter
+% Carrier
+% i <3 ty
+fc=64e3;
 Ac = 1;
 ct=Ac*cos(2*pi*fc*tt);
-mt = exp(-tt.*tt*1e6);
+
+% Message
+Am = 1;
+fm = 4e3; 
+mt = Am*cos(2*pi*fm*tt);
+
+% modulated signal
 st = mt.*ct;
 
+%%
 figure(1)
 Hp1 = plot(tt,ct);
 set(Hp1,'LineWidth',2)
@@ -31,7 +41,7 @@ set(Hx,'FontWeight','bold','Fontsize',16)
 title('Carrier : Time domain');
 axis([-1e-3 1e-3 -1.1 1.1])
 pause(1)
-
+%%
 figure(2)
 Hp1 = plot(tt,mt);
 set(Hp1,'LineWidth',2)
@@ -44,7 +54,10 @@ set(Hx,'FontWeight','bold','Fontsize',16)
 title('message signal : Time domain');
 axis([-0.01 0.01 0 1.1])
 pause(1)
+%%
+% DSB-SC in time domain
 figure(3)
+
 Hp1 = plot(tt,st);
 set(Hp1,'LineWidth',2)
 Ha = gca;
@@ -57,6 +70,8 @@ title('DSB-SC modulated wave : Time domain');
 axis([-10/fc 10/fc min(st) max(st)])
 pause(1)
 Mf = fftshift(fft(fftshift(mt)))/(2*fmax);
+
+%%
 figure(4)
 %The amplitude of the spectrum is different from the Fourier transform
 %amplitude due to discretization of discrete Fourier transform
@@ -72,7 +87,8 @@ title('Spectrum of the message signal');
 axis ([-15e3 15e3 0 max(abs(Mf))])
 pause(1)
 
-
+%%
+% DSB-SC in frequnecy domaun
 Sf = fftshift(fft(fftshift(st)))/(2*fmax);
 figure(5)
 Hp1=plot(freq,abs(Sf));
@@ -145,15 +161,3 @@ title('Output of low pass filter,  m hat(t)  : Time domain');
 axis([-0.01 0.01 min(mt*0.5) max(mt*0.5)])
 legend('LPF output', 'message sig');
 
-
-
-
-
-
-
-
-
-
-
-
-     
