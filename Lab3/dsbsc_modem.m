@@ -160,7 +160,7 @@ pause(1)
 
 %%
 %Low pass filtering
-f_cutoff = 50e3;
+f_cutoff = 30e3;
 %ideal low pass filter
 Hf = zeros(1, length(freq));
 n=1;
@@ -183,7 +183,7 @@ Hx=xlabel('Frequency (Hz) ');
 set(Hx,'FontWeight','bold','Fontsize',16)
 Hx=ylabel('|M(f)|');
 set(Hx,'FontWeight','bold','Fontsize',16)
-title('Spectrum of the message signal');
+title('Spectrum output of low pass filter signal');
 axis ([-1e4 1e4 0 max(abs(Mf1))])
 pause(1)
 
