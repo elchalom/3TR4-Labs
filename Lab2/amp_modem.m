@@ -1,3 +1,5 @@
+% Junseo Mun and Matthew El Chalouhi
+
 clear
 hold off
 format long e
