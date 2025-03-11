@@ -174,8 +174,8 @@ n=n+1;
 end
 
 Mf1 = Sf1 .* Hf;
-Hp1=plot(freq,abs(Mf1));
 figure(8)
+Hp1=plot(freq,abs(Mf1));
 set(Hp1,'LineWidth',2)
 Ha = gca;
 set(Ha,'Fontsize',16)
