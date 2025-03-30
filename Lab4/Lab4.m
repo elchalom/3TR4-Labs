@@ -1,43 +1,43 @@
-%This code sets up the time and frequency vectors for all the numerical
-%experiments of Lab3
+% This code sets up the time and frequency vectors for all the numerical
+% experiments of Lab3
 
-%Junseo Mun and Matthew El Chalouhi
+% Junseo Mun and Matthew El Chalouhi
+
 clear 
-format long e
-tend = 10;
-tbeg = -10;
+endTime = 10;
+beginTime = -10;
 N=100000;
-tstep = (tend-tbeg)/N;
-sampling_rate = 1/tstep;
+timeStep = (endTime-beginTime)/N;
+sampling_rate = 1/timeStep;
 
-%Time window =
-tt = tbeg:tstep:tend-tstep;
+% Time window =
+timeWindow = beginTime:timeStep:endTime-timeStep;
 
-% load('lab4_num_expt1')
+% Data 
+%load('lab4_num_expt1')
 load('lab4_num_expt2')
-%load('lab4_num_expt3')
 
-maxlag = 20000;
-%Autocorrelation of yt
-Ry  = xcorr(yt,yt,maxlag);
-%tau vector
-tau_vec = -(maxlag*tstep):tstep:maxlag*tstep;
-%Abs. PSD corresponding to yt
+maxLag = 20000;
+% Autocorrelation of yt
+Ry = xcorr(yt,yt,maxLag);
+% Vector of Tau values
+tauVector = -(maxLag*timeStep):timeStep:maxLag*timeStep;
+% Abs. PSD corresponding to yt
 Sy = abs(fftshift(fft(fftshift(Ry))));
-%define the frequency vector corresponding to tau_vec
-Ntau = length(tau_vec);
-%Nyquist sampling rate
-fmax = sampling_rate/2; 
-fmin = -fmax;
-fstep = (fmax-fmin)/Ntau;
-%Frequency window
-freq = fmin:fstep:fmax-fstep;
+% define the frequency vector corresponding to tauVector
+Ntau = length(tauVector);
+% Nyquist sampling rate
+fMax = sampling_rate/2; 
+fMin = -fMax;
+fStep = (fMax-fMin)/Ntau;
+% Frequency window
+freq = fMin:fStep:fMax-fStep;
 
 %%
-%Autocorrelation Function
 
+% Plot Autocorrelation Function
 figure(1)
-Hp1 = plot(tau_vec, Ry);
+Hp1 = plot(tauVector, Ry);
 set(Hp1, 'LineWidth', 1)
 Ha = gca;
 set(Ha, 'FontSize', 16)
@@ -47,8 +47,7 @@ Hx = ylabel('Ry');
 Hx = yline(0);
 set(Hx, 'FontWeight', 'bold', 'FontSize', 16)
 title('Autocorrelation Plot');
-axis([min(tau_vec) max(tau_vec) min(Ry) max(Ry)])
-pause(1)
+axis([min(tauVector) max(tauVector) min(Ry) max(Ry)])
 
 %%
 % Plot of power spectrum density
@@ -64,12 +63,13 @@ Hx = yline(0);
 set(Hx, 'FontWeight', 'bold', 'FontSize', 16)
 title('Power Spectrum Density Plot');
 axis([min(freq) max(freq) min(Sy) max(Sy)])
-pause(1)
 
 %%
-fig = figure(3);
-plot(tt,yt);
-xlim([-100*tstep 100*tstep]);
+
+% Plot of our time domain signal
+figure(3);
+plot(timeWindow,yt);
+xlim([-100*timeStep 100*timeStep]);
 title ("Time Domain Signal");
 subtitle("y(t)", 'interpreter', 'latex');
 xlabel("Time(s)", 'FontWeight', 'bold');
@@ -77,17 +77,16 @@ ylabel("y(t)", "FontWeight", 'bold');
 
 
 %%
-fig = figure(4);
 Nyt = length(yt);
 
-fmax = sampling_rate/2;
-fmin = -fmax;
-fstep = (fmax-fmin)/Nyt;
+fMax = sampling_rate/2;
+fMin = -fMax;
+fStep = (fMax-fMin)/Nyt;
 
-freq = fmin:fstep:fmax-fstep;
+freq = fMin:fStep:fMax-fStep;
 
 % Plot Magnitude Spectrum
-
+figure(4);
 plot(freq, abs(fftshift(fft(fftshift(yt)))));
 title("Magnitude Plot");
 xlabel("Frequency (Hz)", 'FontWeight', 'bold');
